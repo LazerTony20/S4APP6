@@ -21,10 +21,11 @@ h = signal.firwin(
 )
 
 
-
 #filtre fir passe haut
 fc2=4490
 
+
+iiiin = 0
 
 
 h2 = signal.firwin(
