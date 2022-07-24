@@ -44,6 +44,10 @@
 */
 
 #include "mcc_generated_files/mcc.h"
+#include "main.h"
+
+int32_t inbuffer[BUFSIZ], outbuffer[BUFSIZ];
+bool bufferFull = false;
 
 /*
                          Main application
@@ -61,6 +65,9 @@ int main(void)
     while (1)
     {
         // Add your application code
+        if (bufferFull) {
+            bufferFull = false;
+        }
     }
 
     return -1;

@@ -50,6 +50,7 @@
 
 #include <xc.h>
 #include "adc1.h"
+#include "../main.h"
 
 /**
   Section: Driver Interface
@@ -118,6 +119,22 @@ void ADC1_ChannelSelect( ADC1_CHANNEL channel )
 
 void __ISR ( _ADC_VECTOR, IPL1AUTO ) ADC_1 (void)
 {
+    static int n = 0;
+    // Load ADC sample into input buffer, scale from [-512,511]
+    // to [0,PR2] and write to output buffer
+    inbuffer[n] = ADC1BUF0;
+    outbuffer[n] = (inbuffer[n] + 512) * PR2 >> 10;
+    
+    // If buffer full, reset counter, flag reset to main program
+    if (n++ == BUFSIZ) {
+        n = 0;
+        bufferFull = true;
+    }
+    
+    // Writee output sample to PWM
+    OC1_PWMPulseWidthSet(outbuffer[n]);
+    
+    
     // Read ADC Buffer since the interrupt is persistent
     
     // clear ADC interrupt flag
