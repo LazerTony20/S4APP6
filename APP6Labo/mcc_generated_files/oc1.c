@@ -1,24 +1,25 @@
-/**
-  Generated Main Source File
 
-  Company:
+/**
+  OC1 Generated Driver API Source File
+
+  @Company
     Microchip Technology Inc.
 
-  File Name:
-    main.c
+  @File Name
+    oc1.c
 
-  Summary:
-    This is the main file generated using PIC32MX MCUs
+  @Summary
+    This is the generated source file for the OC1 driver using PIC32MX MCUs
 
-  Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
+  @Description
+    This source file provides APIs for driver for OC1.
     Generation Information :
         Product Revision  :  PIC32MX MCUs - pic32mx : v1.35
         Device            :  PIC32MX370F512L
-        Driver Version    :  2.00
+        Driver Version    :  0.5
     The generated drivers are tested against the following:
         Compiler          :  XC32 1.42
-        MPLAB             :  MPLAB X 3.55
+        MPLAB 	          :  MPLAB X 3.55
 */
 
 /*
@@ -43,28 +44,70 @@
     TERMS.
 */
 
-#include "mcc_generated_files/mcc.h"
+/**
+  Section: Included Files
+*/
+#include <xc.h>
+#include "oc1.h"
 
-/*
-                         Main application
- */
-int main(void)
+/**
+  Section: Driver Interface
+*/
+
+void OC1_Initialize (void)
 {
-    // initialize the device
-    SYSTEM_Initialize();
-    BMXCONbits.BMXWSDRM = 0;
-    CHECONbits.PFMWS = 3;
-    CHECONbits.PREFEN = 2;
-    TMR2_Start();
-    TMR3_Start();
-
-    while (1)
-    {
-        // Add your application code
-    }
-
-    return -1;
+    // OC1RS 0;     
+    OC1RS = 0x0;
+    
+    // OC1R 0;     
+    OC1R = 0x0;
+    
+    // OC32 16-bit Mode; OCM PWM mode fault disabled; SIDL disabled; OCTSEL TMR2; ON enabled;     
+    OC1CON = 0x8006;
+	
 }
+
+void OC1_Tasks( void )
+{
+    if(IFS0bits.OC1IF)
+    {
+        IFS0CLR= 1 << _IFS0_OC1IF_POSITION;
+    }
+}
+
+void OC1_Start( void )
+{
+    OC1CONbits.ON = 1;
+}
+
+void OC1_Stop( void )
+{
+    OC1CONbits.ON = 0;
+}
+
+void OC1_SingleCompareValueSet( uint16_t value )
+{
+    OC1R = value;
+}
+
+void OC1_DualCompareValueSet( uint16_t priVal, uint16_t secVal )
+{
+    OC1R = priVal;
+	
+    OC1RS = secVal;
+}
+
+void OC1_PWMPulseWidthSet( uint16_t value )
+{
+    OC1RS = value;
+}
+
+bool OC1_PWMFaultStatusGet()
+{ 
+    /* Return the status of the fault condition */
+    return(OC1CONbits.OCFLT);
+}
+
 /**
  End of File
 */

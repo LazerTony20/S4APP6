@@ -100,6 +100,10 @@ void SYSTEM_Initialize(void)
 {
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
+    ADC1_Initialize();
+    TMR3_Initialize();
+    OC1_Initialize();
+    TMR2_Initialize();
     INTERRUPT_Initialize();
 
 }

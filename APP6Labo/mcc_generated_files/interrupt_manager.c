@@ -53,6 +53,11 @@
 */
 void INTERRUPT_Initialize (void)
 {    
+    //    ADI: ADC1 Convert Done
+    //    Priority: 1
+    //    SubPriority: 0
+        IPC5bits.AD1IP = 1;
+        IPC5bits.AD1IS = 0;
 
     //  Enable the multi vector
     INTCONbits.MVEC = 1;

@@ -76,7 +76,7 @@ void PIN_MANAGER_Initialize(void)
     TRISA = 0xC6FF;
     TRISB = 0xFFFF;
     TRISC = 0xF01E;
-    TRISD = 0xFFFF;
+    TRISD = 0xFEFF;
     TRISE = 0x03FF;
     TRISF = 0x31FF;
     TRISG = 0xF3CF;
@@ -119,6 +119,16 @@ void PIN_MANAGER_Initialize(void)
     ANSELE = 0x00F4;
     ANSELG = 0x03C0;
 
+    /****************************************************************************
+     * Set the PPS
+     ***************************************************************************/
+    SYSTEM_RegUnlock(); // unlock PPS
+    CFGCONbits.IOLOCK = 0;
+
+    RPD8Rbits.RPD8R = 0x000C;   //RD8->OC1:OC1;
+
+    CFGCONbits.IOLOCK = 1; // lock   PPS
+    SYSTEM_RegLock(); 
 
     
 }

@@ -54,6 +54,152 @@
 /**
     Section: Device Pin Macros
 */
+/**
+  @Summary
+    Sets the GPIO pin, RG7, high using LATGbits.LATG7.
+
+  @Description
+    Sets the GPIO pin, RG7, high using LATGbits.LATG7.
+
+  @Preconditions
+    The RG7 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RG7 high (1)
+    channel_AN17_SetHigh();
+    </code>
+
+*/
+#define channel_AN17_SetHigh()          LATGbits.LATG7 = 1
+/**
+  @Summary
+    Sets the GPIO pin, RG7, low using LATGbits.LATG7.
+
+  @Description
+    Sets the GPIO pin, RG7, low using LATGbits.LATG7.
+
+  @Preconditions
+    The RG7 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RG7 low (0)
+    channel_AN17_SetLow();
+    </code>
+
+*/
+#define channel_AN17_SetLow()           LATGbits.LATG7 = 0
+/**
+  @Summary
+    Toggles the GPIO pin, RG7, using LATGbits.LATG7.
+
+  @Description
+    Toggles the GPIO pin, RG7, using LATGbits.LATG7.
+
+  @Preconditions
+    The RG7 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Toggle RG7
+    channel_AN17_Toggle();
+    </code>
+
+*/
+#define channel_AN17_Toggle()           LATGbits.LATG7 ^= 1
+/**
+  @Summary
+    Reads the value of the GPIO pin, RG7.
+
+  @Description
+    Reads the value of the GPIO pin, RG7.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    uint16_t portValue;
+
+    // Read RG7
+    postValue = channel_AN17_GetValue();
+    </code>
+
+*/
+#define channel_AN17_GetValue()         PORTGbits.RG7
+/**
+  @Summary
+    Configures the GPIO pin, RG7, as an input.
+
+  @Description
+    Configures the GPIO pin, RG7, as an input.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RG7 as an input
+    channel_AN17_SetDigitalInput();
+    </code>
+
+*/
+#define channel_AN17_SetDigitalInput()  TRISGbits.TRISG7 = 1
+/**
+  @Summary
+    Configures the GPIO pin, RG7, as an output.
+
+  @Description
+    Configures the GPIO pin, RG7, as an output.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RG7 as an output
+    channel_AN17_SetDigitalOutput();
+    </code>
+
+*/
+#define channel_AN17_SetDigitalOutput() TRISGbits.TRISG7 = 0
 
 /**
     Section: Function Prototypes
