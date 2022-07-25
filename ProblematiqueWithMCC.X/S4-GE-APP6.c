@@ -122,6 +122,7 @@ int main(void) {
 
     // Calculate spectral resolution, use (double) type casting for parameters
     // *** POINT A1: spectralResolution =...
+    spectralResolution = ((double) Fe) / ((double) FFT_LEN);
 
     // MX3 peripherals hardware initializations
     BTN_Init();
@@ -230,9 +231,13 @@ int main(void) {
                     inFFT[n].re = 0;
                     inFFT[n].im = 0;
                 }
+                //=======================================================================================
+                //===================================A FAIRE AU DESSUS===================================
+                //=======================================================================================
+                
                 
                 // *** POINT A2: calculate frequency spectrum components X[k] with PIC32 DSP Library FFT function call
-
+                mips_fft32(outFFT, inFFT, twiddles, Scratch, log2N);
                 // Calculate power spectrum
                 calc_power_spectrum(outFFT, debugBuffer1, FFT_LEN);
 
@@ -247,6 +252,8 @@ int main(void) {
                 
                 // Calculate value in Hz of frequency with highest power 
                 // *** POINT A4: maxAmplFreq = ...
+                
+                
 
                 // Show frequency with highest power on 7 segment display, max-out at 4 digits (9999)
                 numberInto4DigitString(maxAmplFreq, freqDigits);
@@ -348,6 +355,14 @@ void calc_power_spectrum(int32c *inbuf, int32_t *outbuf, int n) {
     double re, im;
 
     // *** POINT A3: Complete the calc_power_spectrum() function
+    int k;
+    double norme;
+    for (k = 0; k < n; k++) {
+        re = inbuf[k].re;
+        im = inbuf[k].im;
+        norme = sqrt(pow(re,2) + pow(im,2));
+        outbuf[k] = 10*log10(norme + 1);
+    }
 }
 
 
