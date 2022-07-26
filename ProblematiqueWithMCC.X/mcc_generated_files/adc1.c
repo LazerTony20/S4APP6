@@ -152,12 +152,12 @@ void __ISR ( _ADC_VECTOR, IPL1AUTO ) ADC_1 (void)
          for (nSOS = 0; nSOS < N_SOS_SECTIONS; nSOS++) {
             // *** POINT C1
             
-			// y[n] = 
-			
-			// v[n] = 
-			
-			// u[n] = 
-            
+			// y[nSOS] = 
+            y = (IIRv[nSOS] + IIRCoeffs[nSOS][0] * x) >> 13; 
+			// v[nSOS] = 
+			IIRv[nSOS] = (IIRCoeffs[nSOS][1] * x) - (IIRCoeffs[nSOS][4] * y) + IIRu[nSOS];
+			// u[nSOS] = 
+            IIRu[nSOS] = (IIRCoeffs[nSOS][2] * x) - (IIRCoeffs[nSOS][5] * y);
             // Update the input for the next SOS section
             x = y;
         }

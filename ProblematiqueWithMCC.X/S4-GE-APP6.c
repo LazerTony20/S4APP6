@@ -231,9 +231,7 @@ int main(void) {
                     inFFT[n].re = 0;
                     inFFT[n].im = 0;
                 }
-                //=======================================================================================
-                //===================================A FAIRE AU DESSUS===================================
-                //=======================================================================================
+                
                 
                 
                 // *** POINT A2: calculate frequency spectrum components X[k] with PIC32 DSP Library FFT function call
@@ -295,6 +293,7 @@ int main(void) {
                 //                of the FFT algorithm (See DS51685E, p.118), else roundoff error 
                 //                decreases resolution of X[k] result.
                 uint32_t m, i;
+                /*
                 for (m = 0; m < 4; m++)
                 {
                     for (i = 0; i < H_LEN; i++)
@@ -308,6 +307,17 @@ int main(void) {
                         inFFT[(H_LEN * m) + i].im = 0;
                     }
                 }
+                 */
+                
+                for (n = (SIG_LEN-H_LEN); n < SIG_LEN; n++) {
+                    inFFT[n-(SIG_LEN-H_LEN)].re = currentInBuffer[n]*FFT_LEN;
+                    inFFT[n-(SIG_LEN-H_LEN)].im = 0;
+                }
+                for (n = H_LEN; n < FFT_LEN; n++) {
+                    inFFT[n].re = previousInBuffer[n-H_LEN]*FFT_LEN;
+                    inFFT[n].im = 0;
+                }
+                
                 // *** POINT B1: Calculate X[k] with PIC32 DSP Library FFT function call
                 mips_fft32(outFFT, inFFT, fftc, debugBuffer3, 10);
                 // *** POINT B2: FIR Filtering, calculate Y* = (HX)*, where "*" is the complex conjugate
@@ -319,7 +329,13 @@ int main(void) {
                     inFFT[i].im *= -1;
                 }
                 // *** POINT B3: Inverse FFT by forward FFT library function call, no need to divide by N
-                mips_fft32(outFFT, inFFT, fftc, debugBuffer3, 10);
+                //mips_fft32(outFFT, inFFT, fftc, debugBuffer3, 10);
+                for (n = 0; n < FFT_LEN; n++){  //Remise à zero de Scratch
+                    Scratch[n].re = 0;
+                    Scratch[n].im = 0;
+                    inFFT[n].im = -1*inFFT[n].im;   //Conjugé complexe de inFFT
+                }
+                mips_fft32(outFFT,inFFT,twiddles,Scratch,LOG2FFTLEN);
                 // *** POINT B4: Extract real part of the inverse FFT result and remove H QX.Y scaling,
 				// discard first block as per the "Overlap-and-save" method.
                 for (i = 0; i < SIG_LEN; i++)
