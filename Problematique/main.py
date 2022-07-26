@@ -195,7 +195,7 @@ plt.xlabel("Fréquence [Hz]")
 plt.ylabel("Gain (DC)")
 
 
-plt.show()
+
 
 
 #csv lowpass
@@ -207,7 +207,7 @@ a2 = np.asarray([ hi2 ])
 np.savetxt("high_pass.csv", a2, delimiter=",")
 #csv passbande1
 a3 = np.asarray([ hi3 ])
-np.savetxt("band_pass.csv1000", a3, delimiter=",")
+np.savetxt("band_pass1000.csv", a3, delimiter=",")
 #csv passbande2
 a4 = np.asarray([ hi4 ])
 np.savetxt("band_pass2000.csv", a4, delimiter=",")
@@ -216,4 +216,114 @@ a5 = np.asarray([ hi5 ])
 np.savetxt("band_pass3500.csv", a5, delimiter=",")
 #csv coupebande
 a6 = np.asarray([ sos2_13])
-np.savetxt("stop_pass.csv", a6, delimiter=",")
+#np.savetxt("stop_pass.csv", a6, delimiter=",")
+
+#=========================================================================
+t=0
+x=256
+n=np.arange(0,N)
+
+#sinus passe-bas
+sin300=np.sin(2*np.pi*n*300/fe)
+sin1000=np.sin(2*np.pi*n*1000/fe)
+
+fftsin300=np.fft.fft(sin300)
+fftsin1000=np.fft.fft(sin1000)
+
+lp300=hi*fftsin300
+lp1000=hi*fftsin1000
+
+
+
+plt.figure('lp filter')
+plt.subplot(2,1,1)
+plt.plot(np.fft.ifft(lp300))
+plt.subplot(2,1,2)
+plt.plot(np.fft.ifft(lp1000))
+#sinus passe-haut
+sin4000=np.sin(2*np.pi*np.arange(N-1)*4000/fe)
+sin5000=np.sin(2*np.pi*np.arange(N-1)*5000/fe)
+
+hp4000=hi2*np.fft.fft(sin4000)
+hp5000=hi2*np.fft.fft(sin5000)
+
+plt.figure('hp filter')
+plt.subplot(2,1,1)
+plt.plot(np.fft.ifft(hp4000))
+plt.subplot(2,1,2)
+plt.plot(np.fft.ifft(hp5000))
+
+#sinus passe-bande1
+sin200=np.sin(2*np.pi*n*200/fe)
+sin10003=np.sin(2*np.pi*n*1000/fe)
+sin2000=np.sin(2*np.pi*n*2000/fe)
+
+bp200=hi3*np.fft.fft(sin200)
+bp1000=hi3*np.fft.fft(sin10003)
+bp2000=hi3*np.fft.fft(sin2000)
+
+plt.figure('bp filter1')
+plt.subplot(3,1,1)
+plt.plot(np.fft.ifft(bp200))
+plt.subplot(3,1,2)
+plt.plot(np.fft.ifft(bp1000))
+plt.subplot(3,1,3)
+plt.plot(np.fft.ifft(bp2000))
+
+#sinus passe-bande2
+#sin1450=np.sin(2*np.pi*n*1450/fe)
+#sin2000=np.sin(2*np.pi*n*2000/fe)
+sin3000=np.sin(2*np.pi*n*3000/fe)
+
+bp4=hi4*np.fft.fft(sin10003)
+bp5=hi4*np.fft.fft(sin2000)
+bp6=hi4*np.fft.fft(sin3000)
+
+plt.figure('bp filter2')
+plt.subplot(3,1,1)
+plt.plot(np.fft.ifft(bp4))
+plt.subplot(3,1,2)
+plt.plot(np.fft.ifft(bp5))
+plt.subplot(3,1,3)
+plt.plot(np.fft.ifft(bp6))
+#sinus passe-bande3
+#sin2400=np.sin(2*np.pi*n*2400/fe)
+sin3500=np.sin(2*np.pi*n*3500/fe)
+sin5500=np.sin(2*np.pi*5500*(n/fe))
+
+bp7=hi5*np.fft.fft(sin2000)
+bp8=hi5*np.fft.fft(sin3500)
+bp9=hi5*np.fft.fft(sin5500)
+
+plt.figure('bp filter3')
+plt.subplot(3,1,1)
+plt.plot(np.fft.ifft(bp7))
+plt.subplot(3,1,2)
+plt.plot(np.fft.ifft(bp8))
+plt.subplot(3,1,3)
+plt.plot(np.fft.ifft(bp9))
+
+#sinus coupe-bande
+sin500=np.sin(2*np.pi*np.arange(0,N2)*500/20000)
+sin10002=np.sin(2*np.pi*np.arange(0,N2)*1000/20000)
+sin1500=np.sin(2*np.pi*np.arange(0,N2)*1500/20000)
+
+
+#bc1=newsos*np.fft.fft(sin500)
+#bc2=newsos*np.fft.fft(sin10002)
+#bc3=newsos*np.fft.fft(sin1500)
+
+
+#plt.figure('bc')
+#plt.subplot(3,1,1)
+#plt.plot(np.fft.ifft(bc1))
+#plt.subplot(3,1,2)
+#plt.plot(np.fft.ifft(bc2))
+#plt.subplot(3,1,3)
+#plt.plot(np.fft.ifft(bc3))
+
+
+#plt.figure('sin')
+#plt.plot(sin940)
+plt.show()
+
