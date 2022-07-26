@@ -114,16 +114,24 @@ hf3=np.fft.fftshift(np.abs(hi3))
 hf4=np.fft.fftshift(np.abs(hi4))
 hf5=np.fft.fftshift(np.abs(hi5))
 
+
+#adition des filtre
+
+hft=hf+hf3+hf4+hf5
+
 Range=np.arange(N)
 
 xaxis=(Range*fe/N)-fe/2
+
+
+
 
 print(h)
 print()
 #print([b,a])
 
 plt.figure(1)
-plt.plot(xaxis[128:256],(hf)[128:256], label='filtre passe-bas 500Hz')
+plt.plot(xaxis[128:256],20*np.log10(hf)[128:256], label='filtre passe-bas 500Hz')
 
 
 
@@ -131,9 +139,9 @@ plt.grid(which="both", axis="both")
 plt.tight_layout()
 
 #plt.figure(2)
-plt.plot(xaxis[128:255],(hf2)[128:255])
+plt.plot(xaxis[128:255],20*np.log10(hf2)[128:255])
 #plt.figure(3)
-plt.plot(xaxis[128:256],(hf3)[128:256], label='filtre passe-bande 1000±500')
+plt.plot(xaxis[128:256],20*np.log10(hf3)[128:256], label='filtre passe-bande 1000±500')
 #plt.title("Réponse en fréquence du filtre fir passe-bande 1000±500")
 #plt.xlabel("Fréquence [Hz]")
 #plt.ylabel("Gain [DC]")
@@ -144,7 +152,7 @@ plt.plot(xaxis[128:256],(hf3)[128:256], label='filtre passe-bande 1000±500')
 
 
 
-plt.plot(xaxis[128:256],(hf4)[128:256], label='passe-bande 2000±500')
+plt.plot(xaxis[128:256],20*np.log10(hf4)[128:256], label='passe-bande 2000±500')
 #plt.title("Réponse en fréquence du filtre fir passe-bande 2000±500")
 #plt.xlabel("Fréquence [Hz]")
 #plt.ylabel("Gain [DC]")
@@ -152,11 +160,11 @@ plt.plot(xaxis[128:256],(hf4)[128:256], label='passe-bande 2000±500')
 #plt.grid(which="both", axis="both")
 #plt.tight_layout()
 #plt.figure(5)
-plt.plot(xaxis[128:256],(hf5)[128:256], label='filtre passe-bande3500±1000')
+plt.plot(xaxis[128:256],20*np.log10(hf5)[128:256], label='filtre passe-bande3500±1000')
 
-plt.title("Réponse en fréquence du filtre fir passe-bas 500Hz")
+plt.title("Réponse en fréquence des filtre fir ")
 plt.xlabel("Fréquence [Hz]")
-plt.ylabel("Gain [DC]")
+plt.ylabel("Gain [dB]")
 plt.legend()
 #plt.title("Réponse en fréquence du filtre fir passe-bande3500±1000")
 #plt.xlabel("Fréquence [Hz]")
@@ -183,7 +191,7 @@ newsos2_5 = sos2_5 / (2 ** 5)
 
 
 plt.semilogx(wsos, 20*np.log10(np.abs(h_dftsos)))
-#plt.semilogx(w2_13sos, (np.abs(h_dft2_13sos)) )
+plt.semilogx(w2_13sos, 20*np.log10(np.abs(h_dft2_13sos)) )
 plt.semilogx(w2_5sos, 20*np.log10(np.abs(h_dft2_5sos)),'--')
 
 
@@ -237,8 +245,21 @@ lp1000=hi*fftsin1000
 
 plt.figure('lp filter')
 plt.subplot(2,1,1)
-plt.plot(np.fft.ifft(lp300))
+
+plt.plot(np.fft.ifft(lp300),label='sinus filtré passe-bas 300Hz')
+plt.title("sinus 300Hz filtré lp")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [DC]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
 plt.subplot(2,1,2)
+plt.title("sinus 1000Hz filtré lp")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [DC]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
 plt.plot(np.fft.ifft(lp1000))
 #sinus passe-haut
 sin4000=np.sin(2*np.pi*np.arange(N-1)*4000/fe)
@@ -249,10 +270,22 @@ hp5000=hi2*np.fft.fft(sin5000)
 
 plt.figure('hp filter')
 plt.subplot(2,1,1)
-plt.plot(np.fft.ifft(hp4000))
-plt.subplot(2,1,2)
-plt.plot(np.fft.ifft(hp5000))
 
+plt.plot(np.fft.ifft(hp4000),label='sinus filtré passe-haut 4000')
+plt.title("sinus 4000Hz filtré hp")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [DC]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
+plt.subplot(2,1,2)
+plt.plot(np.fft.ifft(hp5000),label='sinus filtré passe-haut 5000')
+plt.title("sinus 5000Hz filtré hp")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [DC]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
 #sinus passe-bande1
 sin200=np.sin(2*np.pi*n*200/fe)
 sin10003=np.sin(2*np.pi*n*1000/fe)
@@ -264,12 +297,29 @@ bp2000=hi3*np.fft.fft(sin2000)
 
 plt.figure('bp filter1')
 plt.subplot(3,1,1)
-plt.plot(np.fft.ifft(bp200))
+plt.plot(np.fft.ifft(bp200),label='sinus filtré passe-bande 200Hz')
+plt.title("sinus 200Hz filtré bp")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [DC]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
 plt.subplot(3,1,2)
-plt.plot(np.fft.ifft(bp1000))
+plt.plot(np.fft.ifft(bp1000),label='sinus filtré passe-bande 1000Hz')
+plt.title("sinus 1000Hz filtré bp")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [DC]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
 plt.subplot(3,1,3)
-plt.plot(np.fft.ifft(bp2000))
-
+plt.plot(np.fft.ifft(bp2000),label='sinus filtré passe-bande 2000Hz')
+plt.title("sinus 2000Hz filtré bp")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [DC]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
 #sinus passe-bande2
 #sin1450=np.sin(2*np.pi*n*1450/fe)
 #sin2000=np.sin(2*np.pi*n*2000/fe)
@@ -281,11 +331,29 @@ bp6=hi4*np.fft.fft(sin3000)
 
 plt.figure('bp filter2')
 plt.subplot(3,1,1)
-plt.plot(np.fft.ifft(bp4))
+plt.plot(np.fft.ifft(bp4),label='sinus filtré passe-bande 1000Hz')
+plt.title("sinus 1000Hz filtré bp")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [DC]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
 plt.subplot(3,1,2)
-plt.plot(np.fft.ifft(bp5))
+plt.plot(np.fft.ifft(bp5),label='sinus filtré passe-bande 2000Hz')
+plt.title("sinus 2000Hz filtré bp")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [DC]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
 plt.subplot(3,1,3)
-plt.plot(np.fft.ifft(bp6))
+plt.plot(np.fft.ifft(bp6),label='sinus filtré passe-bande 3000Hz')
+plt.title("sinus 3000Hz filtré bp")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [DC]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
 #sinus passe-bande3
 #sin2400=np.sin(2*np.pi*n*2400/fe)
 sin3500=np.sin(2*np.pi*n*3500/fe)
@@ -297,12 +365,30 @@ bp9=hi5*np.fft.fft(sin5500)
 
 plt.figure('bp filter3')
 plt.subplot(3,1,1)
-plt.plot(np.fft.ifft(bp7))
-plt.subplot(3,1,2)
-plt.plot(np.fft.ifft(bp8))
-plt.subplot(3,1,3)
-plt.plot(np.fft.ifft(bp9))
 
+plt.plot(np.fft.ifft(bp7),label='sinus filtré passe-bande 2000Hz')
+plt.title("sinus 2000Hz filtré bp")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [DC]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
+plt.subplot(3,1,2)
+plt.plot(np.fft.ifft(bp8),label='sinus filtré passe-bande 3500Hz')
+plt.title("sinus 3500Hz filtré bp")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [DC]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
+plt.subplot(3,1,3)
+plt.plot(np.fft.ifft(bp9),label='sinus filtré passe-bande 5500Hz')
+plt.title("sinus 5500Hz filtré bp")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [DC]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
 #sinus coupe-bande
 sin500=np.sin(2*np.pi*np.arange(0,N2)*500/20000)
 sin10002=np.sin(2*np.pi*np.arange(0,N2)*1000/20000)
@@ -325,5 +411,69 @@ sin1500=np.sin(2*np.pi*np.arange(0,N2)*1500/20000)
 
 #plt.figure('sin')
 #plt.plot(sin940)
+
+#adition
+
+
+
+plt.figure('addition')
+plt.plot(xaxis[128:256],20*np.log10(hft)[128:256], label='addition des filtres fir')
+plt.title("addition des filtres fir")
+plt.xlabel("Fréquence [Hz]")
+plt.ylabel("Gain [dB]")
+plt.legend()
+plt.grid(which="both", axis="both")
+plt.tight_layout()
+
+
+#spectre de la sin
+
+sin=np.sin(2*np.pi*np.arange(1024)*(2000/fe))
+plt.figure('finsin')
+plt.subplot(2,1,1)
+sinfft=np.fft.fft(sin)
+finsin=(np.abs(sinfft))
+
+plt.plot(20*np.log10(finsin),label=' spectre dentree ')
+plt.grid(which="both", axis="both")
+plt.tight_layout()
+
+plt.title("calcul du spectre d'entrée")
+plt.xlabel("Échantillons")
+plt.ylabel("Gain [dB]")
+plt.legend()
+
+#plt.plot(xaxis[128:256],sin[128:256])
+
+
+
+#plt.grid(which="both", axis="both")
+#plt.tight_layout()
+
+plt.subplot(2,1,2)
+sin2=np.sin(2*np.pi*np.arange(1024)*(2000/fe))*np.blackman(1024)
+sinfft2=np.fft.fft(sin2)
+finsin2=(np.abs(sinfft2))
+plt.plot(20*np.log10(finsin2), label=' spectre dentree fenêtre blackman')
+
+plt.title("calcul du spectre d'entrée")
+plt.xlabel("Échantillons")
+plt.ylabel("Gain [dB]")
+plt.legend()
+
+plt.grid(which="both", axis="both")
+plt.tight_layout()
+
+
+
+
+
+#plt.figure('dataA2')
+
+#def plot_complex_csv_data(file_name: str, scale_factor: float = 1, fe: float = 20000):
+#plot_complex_csv_data('dataA2.csv')
+
 plt.show()
+
+
 
