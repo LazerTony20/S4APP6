@@ -83,14 +83,15 @@ def plot_complex_csv_data(file_name: str, scale_factor: float = 1, fe: float = 2
 
 if __name__ == "__main__":
     # matplotlib interactive mode
-    plt.ion()
+   # plt.ion()
 
     # If running outside PyCharm, read parameters from command line (* == unpack)
-    if sys.gettrace() is None:
-        plot_complex_csv_data(sys.argv[1], *np.array(sys.argv[2:]).astype(np.float64))
-        input("Press any key to exit...\n")
+   # if sys.gettrace() is None:
+    #    plot_complex_csv_data(sys.argv[1], *np.array(sys.argv[2:]).astype(np.float64))
+    #    input("Press any key to exit...\n")
     # else running in PyCharm, specify parameters explicitly
-    else:
-        plot_complex_csv_data("Htot.csv", 2 ** 13)
-        # plot_complex_csv_data("outFFT.csv")
-        print("Breakpoint here in PyCharm!")
+   # else:
+   #     plot_complex_csv_data("dataA2.csv", 2 ** 13)
+   #     # plot_complex_csv_data("outFFT.csv")
+    #    print("Breakpoint here in PyCharm!")
+    plot_complex_csv_data('dataA2.csv')

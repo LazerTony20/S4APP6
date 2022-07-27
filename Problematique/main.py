@@ -464,7 +464,7 @@ plt.legend()
 plt.grid(which="both", axis="both")
 plt.tight_layout()
 
-
+uu=np.blackman(1024)
 
 
 
